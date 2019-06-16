@@ -457,6 +457,30 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
     {       
         return $this->db_data['manufacturer_code'];
     }
+
+    /**
+     *  Get the rohs
+     *
+     * @return boolean    true if ROHS compliant
+     *
+     */
+    public function getRohs() : bool
+    {
+        return $this->db_data['rohs']!=0;
+    }
+    
+
+    /**
+     *  Get the mentor id
+     *
+     * @return string   the mentor id
+     *
+     */
+    public function getMentorId() : string
+    {
+        if ($this->db_data['mentor_id'] == Null) return "";
+        return $this->db_data['mentor_id'];
+    }
     
     /**
      *  Get if this part is obsolete
@@ -1334,6 +1358,30 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
     {
         $this->setAttributes(array('ean_number' => $new_ean_number));
     }
+
+    /**
+     *  Set rohs flag
+     *
+     * @param bool $new_rohs        the new rohs flag value
+     *
+     * @throws Exception if there was an error
+     */
+    public function setRohs(bool $new_rohs)
+    {
+        $this->setAttributes(array('ean_rohs' => $new_rohs));
+    }
+
+    /**
+     *  Set mentor_id
+     *
+     * @param string $new_mentor_id        the new mentor id
+     *
+     * @throws Exception if there was an error
+     */
+    public function setMentorId(string $new_mentor_id)
+    {
+        $this->setAttributes(array('mentor_id' => $new_mentor_id));
+    }
     
     /**
      *  Set the "manual_order" attribute
@@ -1537,12 +1585,20 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
         }
 
         // TODO: Add Permissions check
-        if (isset($new_values['manufacturer_code'])) { //  && $this->current_user->canDo(PermissionManager::PARTS, PartPermission::CHANGE_FAVORITE)) {
+        if (isset($new_values['manufacturer_code']) && $this->current_user->canDo(PermissionManager::PARTS_MANUFACTURER_CODE, PartPermission::EDIT)) {
             $arr['manufacturer_code'] = $new_values['manufacturer_code'];
         }
 
-        if (isset($new_values['ean_code'])) { //  && $this->current_user->canDo(PermissionManager::PARTS, PartPermission::CHANGE_FAVORITE)) {
+        if (isset($new_values['ean_code']) && $this->current_user->canDo(PermissionManager::PARTS_EAN_CODE, PartPermission::EDIT)) {
             $arr['ean_code'] = $new_values['ean_code'];
+        }
+
+        if (isset($new_values['rohs']) && $this->current_user->canDo(PermissionManager::PARTS_ROHS, PartPermission::EDIT)) {
+            $arr['rohs'] = $new_values['rohs'];
+        }
+
+        if (isset($new_values['mentor_id']) && $this->current_user->canDo(PermissionManager::PARTS_MENTOR_ID, PartPermission::EDIT)) {
+            $arr['mentor_id'] = $new_values['mentor_id'];
         }
         
         /* Exception, gives problem, with editing the name of the Part, via edit_part_info.php
@@ -3100,7 +3156,9 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
         bool $visible = false,
         string $manufacturer_url = '',
         string $manufacturer_code = '',
-        string $ean_code = ''
+        string $ean_code = '',
+        bool $rohs,
+        string $mentor_id
     ) {
         $current_user->tryDo(PermissionManager::PARTS, PartPermission::CREATE);
 
@@ -3124,7 +3182,9 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
                 'order_quantity'                => 1,
                 'manufacturer_product_url'      => $manufacturer_url,
                 'manufacturer_code'             => $manufacturer_code,
-                'ean_code'                      => $ean_code
+                'ean_code'                      => $ean_code,
+                'rohs'                          => $rohs,
+                'mentor_id'                     => $mentor_id
             )
         );
         // the column "datetime_added" will be automatically filled by MySQL

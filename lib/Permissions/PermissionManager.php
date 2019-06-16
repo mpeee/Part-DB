@@ -54,6 +54,11 @@ class PermissionManager
     const PARTS_ATTACHEMENTS = 'parts_attachements';
     const PARTS_ORDER        = 'parts_order';
 
+    const PARTS_MANUFACTURER_CODE   = 'parts_manufacturer_code';
+    const PARTS_EAN_CODE            = 'parts_ean_code';
+    const PARTS_ROHS                = 'parts_rohs';
+    const PARTS_MENTOR_ID           = 'parts_mentor_id';
+    
     const GROUPS            = 'groups';
     const USERS             = 'users';
     const DATABASE          = 'system_database';
@@ -253,6 +258,11 @@ class PermissionManager
         $part_permissions[static::PARTS_PRICES]     = new CPartAttributePermission($this->perm_holder, static::PARTS_PRICES, _('Preise'));
         $part_permissions[static::PARTS_ORDER]     = new PartAttributePermission($this->perm_holder, static::PARTS_ORDER, _('Bestellungen'));
 
+        $part_permissions[static::PARTS_MANUFACTURER_CODE]     = new PartAttributePermission($this->perm_holder, static::PARTS_MANUFACTURER_CODE, _('Herstellernummer'));
+        $part_permissions[static::PARTS_EAN_CODE]     = new PartAttributePermission($this->perm_holder, static::PARTS_EAN_CODE, _('EAN Nummer'));
+        $part_permissions[static::PARTS_ROHS]     = new PartAttributePermission($this->perm_holder, static::PARTS_ROHS, _('ROHS'));
+        $part_permissions[static::PARTS_MENTOR_ID]     = new PartAttributePermission($this->perm_holder, static::PARTS_MENTOR_ID, _('Mentor Part ID'));
+        
         $this->permissions[] = new PermissionGroup(_('Bauteile'), $part_permissions);
 
         $structural_permissions = array();

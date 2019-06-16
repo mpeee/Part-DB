@@ -173,7 +173,7 @@
 	                <div class="col-md-10">
 	                    <input type="text" name="manufacturer_code" class="form-control" min="0" placeholder="{t}z.B. S25FL256SAGMFIG03{/t}"
 	                           value="{$manufacturer_code}" onkeydown="if (event.keyCode == 13) { document.getElementById('btn_enter').click();}"
-	                           >
+                           	   {if !$can_manufacturer_code}disabled{/if}>
 	                </div>
 	            </div>
             {/if}
@@ -191,7 +191,29 @@
                 <div class="col-md-10">
                     <input type="text" name="ean_code" class="form-control" min="0" placeholder="{t}z.B. 4 012345 123456{/t}"
                            value="{$ean_code}" onkeydown="if (event.keyCode == 13) { document.getElementById('btn_enter').click();}"
-                           >
+                           {if !$can_ean_code}disabled{/if}>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">
+                    {t}ROHS:{/t}
+                </label>
+	            <div class="col-md-2">
+	                <div class="form-check abc-checkbox form-check-inline form-control-plaintext">
+	                    <input type="checkbox" class="form-check-input" name="rohs" id="rohs"
+	                           {if $rohs}checked{/if} {if !$can_rohs}disabled{/if}>
+	                    <label class="form-check-label">{t}ROHS Compliant{/t}</label>
+	                </div>
+	            </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">
+                    {t}Mentor ID:{/t}
+                </label>
+                <div class="col-md-10">
+                    <input type="text" name="mentor_id" class="form-control" min="0" placeholder="{t}z.B. CAPA012345{/t}"
+                           value="{$mentor_id}" onkeydown="if (event.keyCode == 13) { document.getElementById('btn_enter').click();}"
+                           {if !$can_mentor_id}disabled{/if}>
                 </div>
             </div>
             {if !$disable_footprints}

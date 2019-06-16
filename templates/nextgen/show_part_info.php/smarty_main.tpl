@@ -83,6 +83,24 @@
                     	<div class="col-sm-9"><p class="form-control-plaintext">{$ean_code}</p></div>
                     </div>
 
+	                <div class="form-group row">
+	                    <label class="col-md-3 col-form-label">
+		                    {t}ROHS:{/t}
+		                </label>
+			            <div class="col-md-9">
+			                <div class="form-check abc-checkbox form-check-inline form-control-plaintext">
+			                    <input type="checkbox" class="form-check-input" name="rohs" id="rohs"
+			                           {if $rohs}checked{/if} disabled>
+			                    <label class="form-check-label">{t}ROHS Compliant{/t}</label>
+			                </div>
+			            </div>
+		            </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">{t}Mentor ID:{/t}</label>
+                    	<div class="col-sm-9"><p class="form-control-plaintext">{$mentor_id}</p></div>
+                    </div>
+
                     {if !$disable_footprints}
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">{t}Footprint:{/t}</label>

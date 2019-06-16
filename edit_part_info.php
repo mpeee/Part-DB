@@ -80,6 +80,8 @@ $new_comment                = isset($_POST['comment'])                   ? (stri
 $new_manufacturer_url       = isset($_POST['manufacturer_url'])          ? (string)$_POST['manufacturer_url']          : '';
 $new_manufacturer_code      = isset($_POST['manufacturer_code'])         ? (string)$_POST['manufacturer_code']                   : '';
 $new_ean_code               = isset($_POST['ean_code'])                  ? (string)$_POST['ean_code']                   : '';
+$new_rohs                   = isset($_POST['rohs']);
+$new_mentor_id              = isset($_POST['mentor_id'])                  ? (string)$_POST['mentor_id']                   : '';
 
 $change_comment             = isset($_POST['change_comment'])    ? (string)$_POST['change_comment']   : null;
 
@@ -287,6 +289,8 @@ if (! $fatal_error) {
                         $new_manufacturer_url,
                         $new_manufacturer_code,
                         $new_ean_code,
+                        $new_rohs,
+                        $new_mentor_id
                     );
 
                     $is_new_part = false;
@@ -335,6 +339,8 @@ if (! $fatal_error) {
                     $messages[] = array('html' => generateInputHidden('visible', $new_visible), 'no_linebreak' => 'true');
                     $messages[] = array('html' => generateInputHidden('manufacturer_code', $new_manufacturer_code), 'no_linebreak' => 'true');
                     $messages[] = array('html' => generateInputHidden('ean_code', $new_ean_code), 'no_linebreak' => 'true');
+                    $messages[] = array('html' => generateInputHidden('rohs', $new_rohs), 'no_linebreak' => 'true');
+                    $messages[] = array('html' => generateInputHidden('mentor_id', $new_mentor_id), 'no_linebreak' => 'true');
                     
                     $partname_invalid = true;
                 }
@@ -362,8 +368,10 @@ if (! $fatal_error) {
                     'comment'           => $new_comment,
                     'manufacturer_product_url' => $new_manufacturer_url,
                     'manufacturer_code' => $new_manufacturer_code,
-                    'ean_code'          => $new_ean_code                    
-                );
+                    'ean_code'          => $new_ean_code,                    
+                    'rohs'              => $new_rohs,
+                    'mentor_id'         => $new_mentor_id
+                    );
 
                 $part->setInstock($new_instock, $change_comment == null ?  _('Bauteil bearbeitet') : $change_comment);
 
@@ -720,6 +728,8 @@ if (! $fatal_error) {
 
             $html->setVariable('ean_code', $part->getEanCode(), 'string');
             $html->setVariable('manufacturer_code', $part->getManufacturerCode(), 'string');
+            $html->setVariable('rohs', $part->getRohs(), 'boolean');
+            $html->setVariable('mentor_id', $part->getMentorId(), 'string');
             
             $html->setVariable('default_change_comment', $default_instock_comment, 'string');
 
@@ -838,7 +848,11 @@ if (! $fatal_error) {
             $html->setVariable('visible', $new_visible, 'boolean');
             $html->setVariable('comment', $new_comment, 'string');
             $html->setVariable('manufacturer_url', $new_manufacturer_url, 'string');
-
+            $html->setVariable('ean_code', $new_ean_code, 'string');
+            $html->setVariable('manufacturer_code', $new_manufacturer_code, 'string');
+            $html->setVariable('rohs', $new_rohs, 'boolean');
+            $html->setVariable('mentor_id', $new_mentor_id, 'string');
+            
             $category_id        = $new_category_id;
             $footprint_id       = $new_footprint_id;
             $storelocation_id   = $new_storelocation_id;
@@ -908,7 +922,11 @@ try {
     $html->setVariable('can_storelocation', $current_user->canDo(PermissionManager::PARTS_STORELOCATION, PartAttributePermission::EDIT));
     $html->setVariable('can_footprint', $current_user->canDo(PermissionManager::PARTS_FOOTPRINT, PartAttributePermission::EDIT));
     $html->setVariable('can_manufacturer', $current_user->canDo(PermissionManager::PARTS_MANUFACTURER, PartAttributePermission::EDIT));
-
+    $html->setVariable('can_manufacturer_code', $current_user->canDo(PermissionManager::PARTS_MANUFACTURER_CODE, PartAttributePermission::EDIT));
+    $html->setVariable('can_ean_code', $current_user->canDo(PermissionManager::PARTS_EAN_CODE, PartAttributePermission::EDIT));
+    $html->setVariable('can_rohs', $current_user->canDo(PermissionManager::PARTS_ROHS, PartAttributePermission::EDIT));
+    $html->setVariable('can_mentor_id', $current_user->canDo(PermissionManager::PARTS_MENTOR_ID, PartAttributePermission::EDIT));
+        
     $html->setVariable('can_attachement_edit', $current_user->canDo(PermissionManager::PARTS_ATTACHEMENTS, CPartAttributePermission::EDIT));
     $html->setVariable('can_attachement_delete', $current_user->canDo(PermissionManager::PARTS_ATTACHEMENTS, CPartAttributePermission::DELETE));
     $html->setVariable('can_attachement_create', $current_user->canDo(PermissionManager::PARTS_ATTACHEMENTS, CPartAttributePermission::CREATE));

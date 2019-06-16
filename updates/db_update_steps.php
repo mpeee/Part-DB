@@ -36,7 +36,7 @@ include_once(BASE.'/updates/db_migration_functions.php');
  *          -> this new "case" must have the number "LATEST_DB_VERSION - 1"!
  */
 
-define('LATEST_DB_VERSION', 26);  // <-- increment here
+define('LATEST_DB_VERSION', 28);  // <-- increment here
 
 /*
  * Get update steps
@@ -1247,6 +1247,38 @@ EOD;
             $updateSteps[] = "ALTER TABLE `pricedetails` CHANGE `price` `price` DECIMAL(11,5) NULL DEFAULT NULL;";
             break;
 
+        case 26:
+            // Add new fields part db
+            $updateSteps[] = "ALTER TABLE `parts`".
+                " ADD COLUMN `ean_code` TINYTEXT NOT NULL AFTER `favorite`,".
+                " ADD COLUMN `manufacturer_code` TINYTEXT NOT NULL AFTER `ean_code`,".
+                " ADD COLUMN `rohs` TINYINT(1) NULL AFTER `manufacturer_code`,".
+                " ADD COLUMN `mentor_id` TINYTEXT NULL AFTER `rohs`;";
+
+            break;
+            
+        case 27:
+            $updateSteps[] = "ALTER TABLE `users`".
+                " ADD `perms_parts_manufacturer_code` SMALLINT NOT NULL AFTER `perms_parts_manufacturer`,".
+                " ADD `perms_parts_ean_code` SMALLINT NOT NULL AFTER `perms_parts_manufacturer_code`,".
+                " ADD `perms_parts_rohs` SMALLINT NOT NULL AFTER `perms_parts_ean_code`,".
+                " ADD `perms_parts_mentor_id` SMALLINT NOT NULL AFTER `perms_parts_rohs`;";                
+
+            $updateSteps[] = "ALTER TABLE `groups`".
+                " ADD `perms_parts_manufacturer_code` SMALLINT NOT NULL AFTER `perms_parts_manufacturer`,".
+                " ADD `perms_parts_ean_code` SMALLINT NOT NULL AFTER `perms_parts_manufacturer_code`,".
+                " ADD `perms_parts_rohs` SMALLINT NOT NULL AFTER `perms_parts_ean_code`,".
+                " ADD `perms_parts_mentor_id` SMALLINT NOT NULL AFTER `perms_parts_rohs`;";
+            
+            break;
+            // give permissions to all user to see and modify the new columns
+//             $updateSteps[] = "UPDATE `groups` SET".
+//                 " `perms_manufacturer_code` = '1',".
+//                 " `perms_ean_code` = '1',".
+//                 " `perms_rohs` = '1',".
+//                 " `perms_mentor_id` = '1';";
+            
+            
         /*
 
     `datetime_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
