@@ -758,7 +758,11 @@ function searchStringToArray(string $search_str) : array
     $arr['partnr'] = getKeywordAfterModifier($search_str, 'inpartnr:');
 
     $arr['manufacturername'] = getKeywordAfterModifier($search_str, 'inmanufacturer:');
-
+    $arr['manufacturercode'] = getKeywordAfterModifier($search_str, 'inmanufacturercode:');
+    
+    $arr['eancode'] = getKeywordAfterModifier($search_str, 'ineancode:');
+    
+    
     //Check if all array entries are "", which means $search_str contains no modifier
     $no_modifier = true;
     foreach ($arr as $n) {

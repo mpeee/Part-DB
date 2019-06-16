@@ -159,7 +159,11 @@
                                         <label for="search_supplier" class="form-check-label">{t}Lieferant{/t}</label></li> {/if}
                                 {if !$manufacturers_disabled}
                                     <div class="form-check-dropdown abc-checkbox"><input type="checkbox"  class="form-check-input" name="search_manufacturer" value="true">
-                                    <label for="search_manufacturer" class="form-check-label">{t}Hersteller{/t}</label></div>{/if}
+                                    <label for="search_manufacturer" class="form-check-label">{t}Hersteller{/t}</label></div>
+                                    <div class="form-check-dropdown abc-checkbox"><input type="checkbox"  class="form-check-input" name="search_manufacturer_code" value="true">
+                                    <label for="search_manufacturer_code" class="form-check-label">{t}Herstellernummer{/t}</label></div>{/if}
+                                <div class="form-check-dropdown abc-checkbox" class="form-check-label"><input type="checkbox" class="form-check-input" name="search_ean_code" value="true" checked>
+                                    <label for="search_ean_code" class="form-check-label">{t}EAN Nummer{/t}</label></div>
                                 {if !$footprints_disabled}
                                     <div class="form-check-dropdown abc-checkbox"><input type="checkbox" class="form-check-input" name="search_footprint" value="true">
                                     <label for="search_footprint" class="form-check-label">{t}Footprint{/t}</label></div>{/if}

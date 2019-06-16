@@ -437,6 +437,28 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
     }
 
     /**
+     *  Get the ean_code
+     *
+     * @return string   the ean code
+     *                      
+     */
+    public function getEanCode() : string
+    {       
+            return $this->db_data['ean_code'];
+    }
+
+    /**
+     *  Get the manufacturer code
+     *
+     * @return string   the manufacturer code
+     *
+     */
+    public function getManufacturerCode() : string
+    {       
+        return $this->db_data['manufacturer_code'];
+    }
+    
+    /**
      *  Get if this part is obsolete
      *
      * @note    A Part is marked as "obsolete" if all their orderdetails are marked as "obsolete".
@@ -1302,6 +1324,18 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
     }
 
     /**
+     *  Set the ean number
+     *
+     * @param string $new_ean_number       the new ean number
+     *
+     * @throws Exception if there was an error
+     */
+    public function setEanNumber(string $new_ean_number)
+    {
+        $this->setAttributes(array('ean_number' => $new_ean_number));
+    }
+    
+    /**
      *  Set the "manual_order" attribute
      *
      * @param boolean $new_manual_order                 the new "manual_order" attribute
@@ -1502,6 +1536,15 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
             $arr['favorite'] = $new_values['favorite'];
         }
 
+        // TODO: Add Permissions check
+        if (isset($new_values['manufacturer_code'])) { //  && $this->current_user->canDo(PermissionManager::PARTS, PartPermission::CHANGE_FAVORITE)) {
+            $arr['manufacturer_code'] = $new_values['manufacturer_code'];
+        }
+
+        if (isset($new_values['ean_code'])) { //  && $this->current_user->canDo(PermissionManager::PARTS, PartPermission::CHANGE_FAVORITE)) {
+            $arr['ean_code'] = $new_values['ean_code'];
+        }
+        
         /* Exception, gives problem, with editing the name of the Part, via edit_part_info.php
         //Throw Exception, if nothing can be done!
         if (empty($arr)) {
@@ -2751,7 +2794,9 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
         bool $supplier_name = false,
         bool $supplierpartnr = false,
         bool $manufacturer_name = false,
-        bool $regex_search = false
+        bool $regex_search = false,
+        bool $manufacturer_code = false,
+        bool $ean_code = false
     ) {
         global $config;
 
@@ -2879,6 +2924,16 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
             $values[] = $keywords['manufacturername'];
         }
 
+        if ($manufacturer_code && $keywords['manufacturercode']!== '') {
+            $query .= " OR (parts.manufacturer_code $like ?)";
+            $values[] = $keywords['manufacturercode'];
+        }
+
+        if ($ean_code && $keywords['eancode']!== '') {
+            $query .= " OR (parts.ean_code $like ?)";
+            $values[] = $keywords['eancode'];
+        }
+        
         if (!isset($config['db']['limit']['search_parts'])) {
             $config['db']['limit']['search_parts'] = 200;
         }
@@ -3043,7 +3098,9 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
         $footprint_id = null,
         string $comment = '',
         bool $visible = false,
-        string $manufacturer_url = ''
+        string $manufacturer_url = '',
+        string $manufacturer_code = '',
+        string $ean_code = ''
     ) {
         $current_user->tryDo(PermissionManager::PARTS, PartPermission::CREATE);
 
@@ -3065,7 +3122,10 @@ class Part extends Base\AttachmentsContainingDBElement implements Interfaces\IAP
                 'manual_order'                  => false,
                 'order_orderdetails_id'         => null,
                 'order_quantity'                => 1,
-                'manufacturer_product_url' => $manufacturer_url)
+                'manufacturer_product_url'      => $manufacturer_url,
+                'manufacturer_code'             => $manufacturer_code,
+                'ean_code'                      => $ean_code
+            )
         );
         // the column "datetime_added" will be automatically filled by MySQL
         // the column "last_modified" will be filled in the function check_values_validity()

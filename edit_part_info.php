@@ -78,6 +78,8 @@ $new_manufacturer_id        = isset($_REQUEST['manufacturer_id'])           ? (i
 $new_visible                = isset($_POST['visible']);
 $new_comment                = isset($_POST['comment'])                   ? (string)$_POST['comment']                   : '';
 $new_manufacturer_url       = isset($_POST['manufacturer_url'])          ? (string)$_POST['manufacturer_url']          : '';
+$new_manufacturer_code      = isset($_POST['manufacturer_code'])         ? (string)$_POST['manufacturer_code']                   : '';
+$new_ean_code               = isset($_POST['ean_code'])                  ? (string)$_POST['ean_code']                   : '';
 
 $change_comment             = isset($_POST['change_comment'])    ? (string)$_POST['change_comment']   : null;
 
@@ -282,7 +284,9 @@ if (! $fatal_error) {
                         $new_footprint_id,
                         $new_comment,
                         $new_visible,
-                        $new_manufacturer_url
+                        $new_manufacturer_url,
+                        $new_manufacturer_code,
+                        $new_ean_code,
                     );
 
                     $is_new_part = false;
@@ -329,7 +333,9 @@ if (! $fatal_error) {
                     $messages[] = array('html' => generateInputHidden('footprint_id', $new_footprint_id), 'no_linebreak' => true);
                     $messages[] = array('html' => generateInputHidden('comment', $new_comment), 'no_linebreak' => 'true');
                     $messages[] = array('html' => generateInputHidden('visible', $new_visible), 'no_linebreak' => 'true');
-
+                    $messages[] = array('html' => generateInputHidden('manufacturer_code', $new_manufacturer_code), 'no_linebreak' => 'true');
+                    $messages[] = array('html' => generateInputHidden('ean_code', $new_ean_code), 'no_linebreak' => 'true');
+                    
                     $partname_invalid = true;
                 }
             } catch (Exception $e) {
@@ -354,7 +360,10 @@ if (! $fatal_error) {
                     'id_storelocation'  => $new_storelocation_id,
                     'visible'           => $new_visible,
                     'comment'           => $new_comment,
-                    'manufacturer_product_url' => $new_manufacturer_url);
+                    'manufacturer_product_url' => $new_manufacturer_url,
+                    'manufacturer_code' => $new_manufacturer_code,
+                    'ean_code'          => $new_ean_code                    
+                );
 
                 $part->setInstock($new_instock, $change_comment == null ?  _('Bauteil bearbeitet') : $change_comment);
 
@@ -709,6 +718,9 @@ if (! $fatal_error) {
             $html->setVariable('comment', $part->getComment(false), 'string');
             $html->setVariable('format_hint', $part->getCategory()->getPartnameHint(true, false), 'string');
 
+            $html->setVariable('ean_code', $part->getEanCode(), 'string');
+            $html->setVariable('manufacturer_code', $part->getManufacturerCode(), 'string');
+            
             $html->setVariable('default_change_comment', $default_instock_comment, 'string');
 
             $html->setVariable('manufacturer_url', $part->getManufacturerProductUrl(true), 'string');

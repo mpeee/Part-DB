@@ -166,12 +166,32 @@
                         </div>
                     </div>
                 </div>
+	            <div class="form-group row">
+	                <label class="col-md-2 col-form-label">
+	                    {t}Herstellernummer:{/t}
+	                </label>
+	                <div class="col-md-10">
+	                    <input type="text" name="manufacturer_code" class="form-control" min="0" placeholder="{t}z.B. S25FL256SAGMFIG03{/t}"
+	                           value="{$manufacturer_code}" onkeydown="if (event.keyCode == 13) { document.getElementById('btn_enter').click();}"
+	                           >
+	                </div>
+	            </div>
             {/if}
             <div class="form-group row">
                 <label class="col-md-2 col-form-label">{t}Herstellerlink:{/t}</label>
                 <div class="col-md-10">
                     <input type="url" class="form-control"  name="manufacturer_url"
                            {if !$can_manufacturer}disabled{/if} value="{$manufacturer_url}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">
+                    {t}EAN:{/t}
+                </label>
+                <div class="col-md-10">
+                    <input type="text" name="ean_code" class="form-control" min="0" placeholder="{t}z.B. 4 012345 123456{/t}"
+                           value="{$ean_code}" onkeydown="if (event.keyCode == 13) { document.getElementById('btn_enter').click();}"
+                           >
                 </div>
             </div>
             {if !$disable_footprints}

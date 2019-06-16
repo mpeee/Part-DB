@@ -26,6 +26,7 @@
                         {if isset($search_storelocation)}       <input type='hidden' name='search_storelocation'>{/if}
                         {if isset($search_footprint)}           <input type='hidden' name='search_footprint'>{/if}
                         {if isset($search_manufacturer)}        <input type='hidden' name='search_manufacturer'>{/if}
+                        {if isset($search_manufacturer_code)}   <input type='hidden' name='search_manufacturer_code'>{/if}
 
                         <div class="form-inline">
                             <label class="mr-2">{t}Exportieren:{/t}</label>
@@ -59,6 +60,7 @@
                         {if isset($search_storelocation)}       <input type='hidden' name='search_storelocation'>{/if}
                         {if isset($search_footprint)}           <input type='hidden' name='search_footprint'>{/if}
                         {if isset($search_manufacturer)}        <input type='hidden' name='search_manufacturer'>{/if}
+                        {if isset($search_manufacturer_code)}   <input type='hidden' name='search_manufacturer_code'>{/if}
 
                         <div class="form-inline">
                             <label class="mr-2">{t}Gruppiere nach:{/t}</label>

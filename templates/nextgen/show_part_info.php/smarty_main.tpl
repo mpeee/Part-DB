@@ -72,7 +72,16 @@
                                 {include "../smarty_structural_link.tpl" link=$manufacturer_path}
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{t}Herstellernummer:{/t}</label>
+                        	<div class="col-sm-9"><p class="form-control-plaintext">{$manufacturer_code}</p></div>
+                        </div>
                     {/if}
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">{t}EAN:{/t}</label>
+                    	<div class="col-sm-9"><p class="form-control-plaintext">{$ean_code}</p></div>
+                    </div>
 
                     {if !$disable_footprints}
                         <div class="form-group row">

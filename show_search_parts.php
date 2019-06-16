@@ -53,6 +53,8 @@ $search_supplierpartnr  = isset($_REQUEST['search_supplierpartnr']);
 $search_storelocation   = isset($_REQUEST['search_storelocation']);
 $search_footprint       = isset($_REQUEST['search_footprint']);
 $search_manufacturer    = isset($_REQUEST['search_manufacturer']);
+$search_manufacturer_code    = isset($_REQUEST['search_manufacturer_code']);
+$search_ean_code        = isset($_REQUEST['search_ean_code']);
 $table_rowcount         = isset($_REQUEST['table_rowcount'])    ? (int)$_REQUEST['table_rowcount']  : 0;
 
 $groupby                = isset($_REQUEST['groupby']) ? (string)$_REQUEST['groupby'] : 'categories';
@@ -187,8 +189,11 @@ if (! $fatal_error) {
                     $search_storelocation,
                     $search_supplier,
                     $search_supplierpartnr,
-                    $search_manufacturer
-                );
+                    $search_manufacturer,
+                    $regex_search,
+                    $search_manufacturer_code,
+                    $search_ean_code,
+                    );
 
                 $export_string = exportParts($parts, 'searchparts', $export_format_id, true, 'search_parts');
             } catch (Exception $e) {
@@ -259,8 +264,10 @@ if (! $fatal_error) {
             $search_supplier,
             $search_supplierpartnr,
             $search_manufacturer,
-            $regex_search
-        );
+            $regex_search,
+            $search_manufacturer_code,
+            $search_ean_code
+            );
 
         $hits_count = count($category_parts, COUNT_RECURSIVE) - count($category_parts);
 
@@ -302,7 +309,9 @@ if (! $fatal_error) {
         $html->setVariable('search_storelocation', $search_storelocation, 'boolean');
         $html->setVariable('search_footprint', $search_footprint, 'boolean');
         $html->setVariable('search_manufacturer', $search_manufacturer, 'boolean');
-
+        $html->setVariable('search_manufacturer_code', $search_manufacturer_code, 'boolean');
+        $html->setVariable('search_ean_code', $search_ean_code, 'boolean');
+        
         // export formats
         $html->setVariable('export_formats', buildExportFormatsLoop('searchparts'));
         $html->setVariable('group_formats', Part::buildSearchGroupByLoop($groupby));

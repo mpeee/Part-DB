@@ -227,6 +227,8 @@ if (! $fatal_error) {
         $html->setVariable('mininstock', $part->getMinInstock(), 'integer');
         $html->setVariable('visible', $part->getVisible(), 'boolean');
         $html->setVariable('comment', nl2br($part->getComment()), 'string');
+        $html->setVariable('ean_code', $part->getEanCode(), 'string');
+        $html->setVariable('manufacturer_code', $part->getManufacturerCode(), 'string');
         $html->setVariable('footprint_path', (is_object($footprint) ? $footprint->buildBreadcrumbLoop('show_footprint_parts.php', 'fid', false, null, true) : null));
         $html->setVariable('footprint_id', (is_object($footprint) ? $footprint->getID() : 0), 'integer');
         $html->setVariable('footprint_filename', (is_object($footprint) ? str_replace(BASE, BASE_RELATIVE, $footprint->getFilename()) : ''), 'string');
